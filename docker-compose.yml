@@ -97,7 +97,7 @@ services:
       KEYCLOAK_BLOG_CLIENT_ID: ${KEYCLOAK_BLOG_CLIENT_ID}
       KEYCLOAK_BLOG_CLIENT_SECRET: ${KEYCLOAK_BLOG_CLIENT_SECRET}
       KEYCLOAK_HOSTNAME: ${KEYCLOAK_HOSTNAME}
-      KEYCLOAK_PORT: ${KEYCLOAK_PORT}
+      KEYCLOAK_PORT: ${KEYCLOAK_HTTP_PORT}
       KEYCLOAK_PROTOCOL: ${KEYCLOAK_PROTOCOL}
       FRONTEND_URL: ${FRONTEND_URL}
     depends_on:
@@ -123,10 +123,10 @@ services:
     container_name: ${KEYCLOAK_HOSTNAME}
     command: start --proxy-headers forwarded --import-realm
     # ports:
-    # - "${KEYCLOAK_PORT}:${KEYCLOAK_PORT}"
+    # - "${KEYCLOAK_HTTP_PORT}:${KEYCLOAK_HTTP_PORT}"
     user: 1000:1000 # default 1000 user, 0 group
     environment:
-      KC_HTTP_PORT: ${KEYCLOAK_PORT}
+      KC_HTTP_PORT: ${KEYCLOAK_HTTP_PORT}
       KC_DB: mysql
       KC_DB_URL_HOST: mysql_svr
       KC_DB_URL_DATABASE: ${KEYCLOAK_DATABASE}
