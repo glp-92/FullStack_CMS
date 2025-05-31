@@ -5,7 +5,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const GetPostList = async (page, criteria) => {
     let fetchedPosts = null;
     try {
-        let url = `${backendUrl}/post?page=${page}`;
+        let url = `${backendUrl}/posts?page=${page}`;
         if (criteria !== null) {
             url += criteria;
         }
@@ -23,7 +23,7 @@ export const GetPostList = async (page, criteria) => {
 export const getPost = async (postSlug) => {
     let postData = null;
     try {
-        const url = `${backendUrl}/post/${postSlug}`;
+        const url = `${backendUrl}/posts/${postSlug}`;
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`GetPostDataError: ${response.statusText}`);
@@ -36,7 +36,7 @@ export const getPost = async (postSlug) => {
 }
 
 export const SavePost = async (method, postData) => {
-    return await FetchWithAuth(`${backendUrl}/post`, {
+    return await FetchWithAuth(`${backendUrl}/posts`, {
         method: method,
         headers: {
             "Content-Type": "application/json"
@@ -46,7 +46,7 @@ export const SavePost = async (method, postData) => {
 };
 
 export const DeletePost = async (postId) => {
-    return await FetchWithAuth(`${backendUrl}/post/${postId}`, {
+    return await FetchWithAuth(`${backendUrl}/posts/${postId}`, {
         method: "DELETE"
     });
 };
