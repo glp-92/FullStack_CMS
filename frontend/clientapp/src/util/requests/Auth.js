@@ -3,7 +3,7 @@ import { FetchWithAuth } from "./FetchWithAuth";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const LoginRequest = async (username, password, totp) => {
-    const url = `${backendUrl}/login`;
+    const url = `${backendUrl}/auth/login`;
     try {
         const response = await fetch(url,
             {
@@ -28,7 +28,7 @@ export const LoginRequest = async (username, password, totp) => {
 export const LogoutRequest = async () => {
     const token = localStorage.getItem("jwt");
     if (!token) return false;
-    const url = `${backendUrl}/revoke`;
+    const url = `${backendUrl}/auth/revoke`;
     try {
         const response = await fetch(url,
             {
@@ -51,7 +51,7 @@ export const LogoutRequest = async () => {
 
 export const ValidateToken = async () => {
     try {
-        const response = await FetchWithAuth(`${backendUrl}/valid`, { method: "GET" });
+        const response = await FetchWithAuth(`${backendUrl}/auth/valid`, { method: "GET" });
         if (!response.ok) {
             throw new Error(`Token validation error: ${response.statusText}`);
         }
