@@ -1,4 +1,3 @@
-import React from 'react'
 import MainPostCard from './MainPostCard';
 import PostList from './PostList'
 

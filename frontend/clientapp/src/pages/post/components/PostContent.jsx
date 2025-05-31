@@ -1,16 +1,14 @@
-import React from 'react'
 import { DateFormatToEs } from '../../../util/date/DateFormatToEs';
 import { Link as RouterLink } from "react-router-dom";
 import MarkdownContent from './MarkdownContent';
-// import Comments from '../comments/Comments';
 
 import { Avatar, Typography, Box, Chip, Card, CardMedia, CardContent, Divider } from '@mui/material';
 
 const PostContent = ({ postData }) => {
 
-    const categories = postData["categories"].map((category) => <RouterLink to={`/search?category=${category.name}`} key={category["id"]}><Chip sx={{ bgcolor:'icons.light', marginRight: 1, marginBottom: 1 }} size='small' key={category["id"]} label={<Typography variant="caption">{category["name"]}</Typography>} /></RouterLink>);
+    const categories = postData.categories.map((category) => <RouterLink to={`/search?category=${category.name}`} key={category.id}><Chip sx={{ bgcolor:'icons.light', marginRight: 1, marginBottom: 1 }} size='small' key={category.id} label={<Typography variant="caption">{category.name}</Typography>} /></RouterLink>);
     
-    const themes = postData["themes"].map((theme) => <RouterLink to={`/search?theme=${theme.name}`} key={theme["id"]}><Chip sx={{ bgcolor:'icons.light', marginRight: 1, marginBottom: 1 }} size='small' key={theme["id"]} label={<Typography variant="caption">{theme["name"]}</Typography>} /></RouterLink>);
+    const themes = postData.themes.map((theme) => <RouterLink to={`/search?theme=${theme.name}`} key={theme.id}><Chip sx={{ bgcolor:'icons.light', marginRight: 1, marginBottom: 1 }} size='small' key={theme.id} label={<Typography variant="caption">{theme.name}</Typography>} /></RouterLink>);
     
     return (
         <Card sx={{ marginTop: 2, borderRadius: 2 }}>
@@ -18,9 +16,9 @@ const PostContent = ({ postData }) => {
                 <Box>
                     <Typography variant="h1">{postData.title}</Typography>
                     <Box sx={{ marginTop: 1, marginBottom: 1, alignItems: 'center' }} display={'flex'}>
-                        <Avatar sx={{ bgcolor:'icons.medium', marginRight: 1 }} src={postData.users.picture && postData.users.picture}>{postData.users.username[0].toUpperCase()}</Avatar>
+                        <Avatar sx={{ bgcolor:'icons.medium', marginRight: 1 }} >{String(postData.username).charAt(0).toUpperCase()}</Avatar>
                         <Box display={'flex'} flexDirection={'column'}>
-                            <Typography variant="caption">{postData.users.username}</Typography>
+                            <Typography variant="caption">{postData.username}</Typography>
                             <Typography variant="caption">{DateFormatToEs(postData.date)}</Typography>
                         </Box>
                     </Box>
@@ -53,10 +51,6 @@ const PostContent = ({ postData }) => {
             <CardContent sx={{ml: 2, mr: 2}}>
                 <MarkdownContent content={postData.content} />
             </CardContent>
-            {/* 
-            <Divider />
-            <Comments postData={postData}/>
-            */}
         </Card>
     )
 }

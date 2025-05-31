@@ -3,7 +3,7 @@ import { FetchWithAuth } from "./FetchWithAuth";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const GetPostList = async (page, criteria) => {
-    let fetchedPosts = null;
+    let postListResponse = null;
     try {
         let url = `${backendUrl}/posts?page=${page}`;
         if (criteria !== null) {
@@ -13,11 +13,11 @@ export const GetPostList = async (page, criteria) => {
         if (!response.ok) {
             throw new Error(`GetPostsError: ${response.statusText}`);
         }
-        fetchedPosts = await response.json();
+        postListResponse = await response.json();
     } catch (error) {
         console.log(error)
     }
-    return fetchedPosts;
+    return postListResponse;
 };
 
 export const getPost = async (postSlug) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import PostList from './components/PostList';
 import { GetPostList } from '../../util/requests/Posts';
@@ -15,48 +15,39 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const pageOnLanding = parseInt(queryParams.get('page') || '1', 10) - 1; // Base 10
+  const currentPage = parseInt(queryParams.get('page') || '1', 10);
 
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(pageOnLanding);
   const [npages, setNPages] = useState(0);
 
   const handlePageChange = (event, value) => {
-    const pageToGo = value - 1;
-    setPage(pageToGo);
-    pageToGo > 0 ? navigate(`/?page=${value}`) : navigate("/");
+    navigate(value > 1 ? `/?page=${value}` : "/");
   };
 
   useEffect(() => {
-    const pageFromUrl = parseInt(queryParams.get('page') || '1', 10) - 1;
-    if (page !== pageFromUrl) {
-      setPage(pageFromUrl);
-    }
-  }, [location.search]);
-
-  useEffect(() => {
-    const fetchPosts = async (page) => {
+    const fetchPosts = async () => {
       setIsLoading(true);
-      const posts = await GetPostList(page, `&perpage=${postsPerPage}`);
-      if (posts != null) {
-        setPosts(posts["content"]);
-        setNPages(posts["totalPages"]);
+      const postListResponse = await GetPostList(currentPage, `&perpage=${postsPerPage}`);
+      if (postListResponse != null) {
+        setPosts(postListResponse["posts"]);
+        setNPages(postListResponse["pages"]);
       } else {
         setPosts([]);
         setNPages(0);
       }
       setIsLoading(false);
     };
-    fetchPosts(page);
-  }, [page, location.search]);
+
+    fetchPosts();
+  }, [currentPage]);
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', marginBottom: 3, marginTop: 3 }}>
       {isLoading ? (
         <Loading height={300} />
       ) : (
-        page === 0 ? (
+        currentPage === 1 ? (
           <LandingPage posts={posts} />
         ) :
           (
@@ -69,7 +60,7 @@ const Home = () => {
         <Pagination sx={{
           marginTop: 5,
           alignSelf: 'center',
-        }} size='small' count={npages} shape="rounded" page={page + 1} onChange={handlePageChange} />
+        }} size='small' count={npages} shape="rounded" page={currentPage} onChange={handlePageChange} />
       }
     </Box>
   )
