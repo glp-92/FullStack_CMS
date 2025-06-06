@@ -7,7 +7,6 @@ import Loading from '../loading/Loading';
 import Box from '@mui/material/Box';
 
 const DependsLogged = () => {
-
     const [tokenValid, setTokenValid] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -26,7 +25,7 @@ const DependsLogged = () => {
         }
         fetchTokenValid();
     }, []);
-
+    
     return (
         <Box sx={{ flex:1, display: 'flex', flexDirection: 'column', width: '100%', marginBottom: 3, marginTop: 2 }}>
             {
@@ -42,5 +41,4 @@ const DependsLogged = () => {
         </Box>
     )
 }
-
 export default DependsLogged

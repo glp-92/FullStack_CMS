@@ -7,7 +7,7 @@ const useCategory = () => {
 
   const [categories, setCategories] = useState([]);
   const [inputCategory, setInputCategory] = useState('');
-  const [categoryPage, setCategoryPage] = useState(0);
+  const [categoryPage, setCategoryPage] = useState(1);
   const [nCategoryPages, setNCategoryPages] = useState(0);
 
   const handleCreateCategory = async () => {
@@ -36,21 +36,25 @@ const useCategory = () => {
     }
   }
 
-  const handleEditCategoryLabel = (newName, index) => {
-    const newCategories = [...categories];
-    newCategories[index]["name"] = newName;
-    newCategories[index]["slug"] = newName;
-    setCategories(newCategories);
+  const handleEditCategoryLabel = (id, newName) => {
+    setCategories(prevCategories => {
+        return prevCategories.map(cat => {
+            if (cat.id === id) {
+                return { ...cat, name: newName, slug: newName };
+            }
+            return cat;
+        });
+    });
   }
 
-  const handleDeleteCategory = async (id, index) => {
+  const handleDeleteCategory = async (id) => {
     if (confirm('Esta accion borrara la Categoria de la base de datos, continuar?')) {
       try {
         let response = await DeleteCategory(id);
         if (!response.ok) {
           throw new Error(`DeleteCategoryError`);
         }
-        categories.length == 1 ? setCategoryPage(0) : fetchCategories(categoryPage);
+        fetchCategories(categoryPage);
       } catch (error) {
         console.error(`${error}`);
       }
@@ -64,8 +68,8 @@ const useCategory = () => {
         throw new Error(`Error fetching categories`);
       }
       const fetchedCategories = await response.json();
-      setCategories(fetchedCategories.content);
-      setNCategoryPages(fetchedCategories.totalPages)
+      setCategories(fetchedCategories.categories);
+      setNCategoryPages(fetchedCategories.pages)
     } catch (error) {
       console.log(error);
     }

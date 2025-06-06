@@ -9,7 +9,7 @@ const Categories = () => {
     const navigate = useNavigate();
 
     const [categories, setCategories] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [npages, setNPages] = useState(0);
 
     const handlePageChange = (event, value) => {
@@ -24,7 +24,7 @@ const Categories = () => {
         const fetchCategories = async () => {
             const response = await GetCategoriesPageable(page);
             const fetchedCategories = await response.json();
-            setCategories(fetchedCategories.content);
+            setCategories(fetchedCategories.categories);
             setNPages(fetchedCategories.totalPages);
         }
         fetchCategories();
@@ -56,7 +56,7 @@ const Categories = () => {
                 <Pagination sx={{
                     marginTop: 5,
                     alignSelf: 'center',
-                }} size='small' count={npages} shape="rounded" page={page + 1} onChange={handlePageChange} />
+                }} size='small' count={npages} shape="rounded" page={page} onChange={handlePageChange} />
             }
         </Box>
     )

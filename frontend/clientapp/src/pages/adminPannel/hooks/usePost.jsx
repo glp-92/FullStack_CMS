@@ -8,7 +8,7 @@ const usePost = () => {
   const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);
-  const [postPage, setPostPage] = useState(0);
+  const [postPage, setPostPage] = useState(1);
   const [nPostPages, setNPostPages] = useState(0);
 
   const handleCreatePost = () => {
@@ -26,7 +26,7 @@ const usePost = () => {
         if (!response.ok) {
           throw new Error(`DeletePostError`);
         }
-        posts.length == 1 ? setPostPage(0) : fetchPosts(postPage);
+        fetchPosts(postPage);
       } catch (error) {
         console.error(`${error}`);
       }
@@ -41,8 +41,8 @@ const usePost = () => {
   const fetchPosts = async (page) => {
     const posts = await GetPostList(page, null);
     if (posts != null) {
-      setPosts(posts.content);
-      setNPostPages(posts.totalPages)
+      setPosts(posts.posts);
+      setNPostPages(posts.pages)
     }
     else {
       setPosts([]);

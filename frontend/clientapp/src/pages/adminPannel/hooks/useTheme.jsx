@@ -6,7 +6,7 @@ const themesPerPage = 2;
 const useTheme = () => {
 
   const [themes, setThemes] = useState([]);
-  const [themePage, setThemePage] = useState(0);
+  const [themePage, setThemePage] = useState(1);
   const [nThemePages, setNThemePages] = useState(0);
 
   const fetchThemes = async (page) => {
@@ -16,8 +16,8 @@ const useTheme = () => {
         throw new Error(`Error fetching themes`);
       }
       const fetchedThemes = await response.json();
-      setThemes(fetchedThemes.content);
-      setNThemePages(fetchedThemes.totalPages);
+      setThemes(fetchedThemes.themes);
+      setNThemePages(fetchedThemes.pages);
     } catch (error) {
       console.error(`${error}`);
     }
@@ -43,6 +43,17 @@ const useTheme = () => {
     }
   }
 
+  const onThemeFieldChange = (themeId, fieldName, newValue) => {
+    setThemes(prevThemes => {
+      return prevThemes.map(theme => {
+        if (theme.id === themeId) {
+          return { ...theme, [fieldName]: newValue }; // Actualiza el campo específico
+        }
+        return theme;
+      });
+    });
+  }
+
   const handleUpdateTheme = async (e) => {
     e.preventDefault();
     const themeForm = new FormData(e.currentTarget);
@@ -60,14 +71,14 @@ const useTheme = () => {
     }
   }
 
-  const handleDeleteTheme = async (id, index) => {
-    if (confirm('Esta accion borrara la Categoria de la base de datos, continuar?')) {
+  const handleDeleteTheme = async (id) => {
+    if (confirm('Esta accion borrara el Tema de la base de datos, continuar?')) {
       try {
         const response = await DeleteTheme(id);
         if (!response.ok) {
           throw new Error(`DeleteThemeError`);
         }
-        themes.length == 1 ? setThemePage(0) : fetchThemes(themePage);
+        fetchThemes(themePage);
       } catch (error) {
         console.error(`${error}`);
       }
@@ -86,6 +97,7 @@ const useTheme = () => {
     nThemePages,
     handleCreateTheme,
     handleUpdateTheme,
+    onThemeFieldChange,
     handleDeleteTheme,
   };
 }

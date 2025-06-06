@@ -7,7 +7,7 @@ import { List, ListItem, Box, Typography, Pagination } from '@mui/material';
 const Themes = () => {
 
     const [themes, setThemes] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [npages, setNPages] = useState(0);
 
     const handlePageChange = (event, value) => {
@@ -18,8 +18,8 @@ const Themes = () => {
         const fetchThemes = async () => {
             const response = await GetThemesPageable(page);
             const fetchedThemes = await response.json();
-            setThemes(fetchedThemes.content);
-            setNPages(fetchedThemes.totalPages);
+            setThemes(fetchedThemes.themes);
+            setNPages(fetchedThemes.pages);
         }
         fetchThemes();
     }, [page])
@@ -48,7 +48,7 @@ const Themes = () => {
                 <Pagination sx={{
                     marginTop: 5,
                     alignSelf: 'center',
-                }} size='small' count={npages} shape="rounded" page={page + 1} onChange={handlePageChange} />
+                }} size='small' count={npages} shape="rounded" page={page} onChange={handlePageChange} />
             }
         </Box>
     )

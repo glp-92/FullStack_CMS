@@ -4,7 +4,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const GetThemes = async () => {
     try {
-        const response = await fetch(`${backendUrl}/theme`);
+        const response = await fetch(`${backendUrl}/themes`);
         return response;
     } catch (error) {
         throw new Error(`Error en la solicitud: ${error}`);
@@ -13,7 +13,7 @@ export const GetThemes = async () => {
 
 export const GetThemesPageable = async (page, perPage) => {
     try {
-        let url = `${backendUrl}/theme?page=${page}`;
+        let url = `${backendUrl}/themes?page=${page}`;
         if (perPage) {
             url += `&perpage=${perPage}`
         }
@@ -25,7 +25,7 @@ export const GetThemesPageable = async (page, perPage) => {
 };
 
 export const CreateTheme = async (themeData) => {
-    return await FetchWithAuth(`${backendUrl}/theme`, {
+    return await FetchWithAuth(`${backendUrl}/themes`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -35,13 +35,13 @@ export const CreateTheme = async (themeData) => {
 };
 
 export const DeleteTheme = async (themeId) => {
-    return await FetchWithAuth(`${backendUrl}/theme/${themeId}`, {
+    return await FetchWithAuth(`${backendUrl}/themes/${themeId}`, {
         method: "DELETE"
     });
 };
 
 export const UpdateTheme = async (themeData) => {
-    return await FetchWithAuth(`${backendUrl}/theme`, {
+    return await FetchWithAuth(`${backendUrl}/themes`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

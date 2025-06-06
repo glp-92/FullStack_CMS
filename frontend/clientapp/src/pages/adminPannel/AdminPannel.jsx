@@ -40,6 +40,7 @@ const AdminPannel = () => {
         nThemePages,
         handleCreateTheme,
         handleUpdateTheme,
+        onThemeFieldChange,
         handleDeleteTheme
     } = useTheme();
 
@@ -104,7 +105,7 @@ const AdminPannel = () => {
                         </Box>
                     ))}
                 </Stack>
-                <Pagination sx={{ pt:1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nPostPages} shape="rounded" page={postPage + 1} onChange={(e, value) => setPostPage(value - 1)} />
+                <Pagination sx={{ pt: 1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nPostPages} shape="rounded" page={postPage} onChange={(e, value) => setPostPage(value)} />
             </Box>
             <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography variant="h2">
@@ -124,15 +125,15 @@ const AdminPannel = () => {
                     </IconButton>
                 </Box>
                 <List dense sx={{ width: '100%' }}>
-                    {categories.map((category, index) => (
-                        <ListItem key={index} alignItems="center" sx={{ mt: 0, mb: 0 }}>
-                            <TextField type="text" fullWidth margin="normal" value={category["name"]} onChange={(e) => handleEditCategoryLabel(e.target.value, index)} />
+                    {categories.map((category) => (
+                        <ListItem key={category.id} alignItems="center" sx={{ mt: 0, mb: 0 }}>
+                            <TextField type="text" fullWidth margin="normal" value={category.name} onChange={(e) => handleEditCategoryLabel(category.id, e.target.value)} />
                             <IconButton
                                 size="large"
                                 edge="start"
                                 color="primary"
                                 aria-label="menu"
-                                onClick={() => handleUpdateCategory(index)}
+                                onClick={() => handleUpdateCategory(category.id)}
                                 sx={{ ml: 1, mr: 1, fontSize: '1.5rem' }}
                             >
                                 <UpdateIcon />
@@ -142,7 +143,7 @@ const AdminPannel = () => {
                                 edge="start"
                                 color="secondary"
                                 aria-label="menu"
-                                onClick={() => handleDeleteCategory(category.id, index)}
+                                onClick={() => handleDeleteCategory(category.id)}
                                 sx={{ fontSize: '1.5rem' }}
                             >
                                 <DeleteIcon />
@@ -152,7 +153,7 @@ const AdminPannel = () => {
                 </List>
                 {
                     nCategoryPages > 1 &&
-                    <Pagination sx={{ marginBottom: 1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nCategoryPages} shape="rounded" page={categoryPage + 1} onChange={(e, value) => setCategoryPage(value - 1)} />
+                    <Pagination sx={{ marginBottom: 1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nCategoryPages} shape="rounded" page={categoryPage} onChange={(e, value) => setCategoryPage(value)} />
                 }
             </Box>
             <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -179,15 +180,15 @@ const AdminPannel = () => {
                     </IconButton>
                 </Box>
                 <List dense sx={{ width: '100%' }}>
-                    {themes.map((theme, index) => (
-                        <ListItem key={index} alignItems="center" sx={{ mt: 0, mb: 0 }}>
+                    {themes.map((theme) => (
+                        <ListItem key={theme.id} alignItems="center" sx={{ mt: 0, mb: 0 }}>
                             <Box component="form" id="editThemeForm" onSubmit={handleUpdateTheme} sx={{ display: 'flex', alignItems: 'center', mt: 2, mb: 0, width: '100%' }}>
                                 <Box flex={1} display={'flex'} flexDirection={'column'} >
                                     <Box mb={1} display={'flex'}>
-                                        <TextField sx={{ flex: 1 }} type="text" defaultValue={theme["name"]} name="name"/>
-                                        <TextField sx={{ ml: 1, flex: 2 }} type="text" defaultValue={theme["featuredImage"]} name="featuredImage" />
+                                        <TextField sx={{ flex: 1 }} type="text" value={theme.name} name="name" onChange={(e) => onThemeFieldChange(theme.id, 'name', e.target.value)} />
+                                        <TextField sx={{ ml: 1, flex: 2 }} type="text" value={theme.featuredImage} name="featuredImage" onChange={(e) => onThemeFieldChange(theme.id, 'featuredImage', e.target.value)} />
                                     </Box>
-                                    <TextField type="text" fullWidth defaultValue={theme["excerpt"]} name="excerpt" />
+                                    <TextField type="text" fullWidth value={theme["excerpt"]} name="excerpt" onChange={(e) => onThemeFieldChange(theme.id, 'excerpt', e.target.value)} />
                                 </Box>
                                 <input type="hidden" name="id" value={theme.id} />
                                 <IconButton
@@ -205,7 +206,7 @@ const AdminPannel = () => {
                                     edge="start"
                                     color="secondary"
                                     aria-label="menu"
-                                    onClick={() => handleDeleteTheme(theme.id, index)}
+                                    onClick={() => handleDeleteTheme(theme.id)}
                                     sx={{ fontSize: '1.5rem' }}
                                 >
                                     <DeleteIcon />
@@ -216,7 +217,7 @@ const AdminPannel = () => {
                 </List>
                 {
                     nThemePages > 1 &&
-                    <Pagination sx={{ marginBottom: 1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nThemePages} shape="rounded" page={themePage + 1} onChange={(e, value) => setThemePage(value - 1)} />
+                    <Pagination sx={{ marginBottom: 1, marginTop: 'auto', alignSelf: 'center', }} size='small' count={nThemePages} shape="rounded" page={themePage} onChange={(e, value) => setThemePage(value)} />
                 }
             </Box>
         </Box>

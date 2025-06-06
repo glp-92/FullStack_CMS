@@ -28,9 +28,6 @@ const Writer = () => {
     */
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    /*for (const value of data.values()) {
-      console.log(value);
-    }*/
     try {
       const tokenValid = await ValidateToken();
       if (!tokenValid) throw new Error(`LoginError`);
@@ -68,7 +65,7 @@ const Writer = () => {
     const fetchCategories = async () => {
       const response = await GetCategories();
       const fetchedCategories = await response.json();
-      setCategories(fetchedCategories);
+      setCategories(fetchedCategories.categories);
 
       if (postToEdit && postToEdit.categories.length > 0) {
         let postCategoryNames = [];
@@ -78,14 +75,14 @@ const Writer = () => {
         setSelectedCategories(postCategoryNames);
       }
       else {
-        if (fetchedCategories != null) setSelectedCategories([]);
+        if (fetchedCategories.categories != null) setSelectedCategories([]);
       }
     }
 
     const fetchThemes = async () => {
       const response = await GetThemes();
       const fetchedThemes = await response.json();
-      setThemes(fetchedThemes);
+      setThemes(fetchedThemes.themes);
 
       if (postToEdit && postToEdit.themes.length > 0) {
         let postThemeNames = [];
@@ -95,7 +92,7 @@ const Writer = () => {
         setSelectedThemes(postThemeNames);
       }
       else {
-        if (fetchedThemes != null) setSelectedThemes([]);
+        if (fetchedThemes.themes != null) setSelectedThemes([]);
       }
     }
     fetchCategories();

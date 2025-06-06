@@ -1,13 +1,16 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const RefreshToken = async () => {
-    let url = `${backendUrl}/refresh`;
+    let token = localStorage.getItem("jwt");
+    if (!token) throw new Error(`NotAuthenticated`);
+    let url = `${backendUrl}/auth/refresh`;
     const response = await fetch(url,
         {
             method: "POST",
             credentials: 'include',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             }
         });
     if (!response.ok) {
@@ -20,7 +23,6 @@ const RefreshToken = async () => {
 export const FetchWithAuth = async (url, options) => {
     let token = localStorage.getItem("jwt");
     if (!token) throw new Error(`NotAuthenticated`);
-
     const makeRequest = async () => {
         return await fetch(url, {
             ...options,
@@ -30,7 +32,6 @@ export const FetchWithAuth = async (url, options) => {
             }
         });
     };
-
     try {
         let response = await makeRequest();
         if (response.status === 401) {
