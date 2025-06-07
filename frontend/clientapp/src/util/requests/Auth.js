@@ -28,7 +28,7 @@ export const LoginRequest = async (username, password, totp) => {
 export const LogoutRequest = async () => {
     const token = localStorage.getItem("jwt");
     if (!token) return false;
-    const url = `${backendUrl}/auth/revoke`;
+    const url = `${backendUrl}/auth/logout`;
     try {
         const response = await fetch(url,
             {

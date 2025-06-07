@@ -36,7 +36,9 @@ export const getPost = async (postSlug) => {
 }
 
 export const SavePost = async (method, postData) => {
-    return await FetchWithAuth(`${backendUrl}/posts`, {
+    let url = `${backendUrl}/posts`
+    if (method === "PUT") url = `${backendUrl}/posts/${postData.postId}`
+    return await FetchWithAuth(url, {
         method: method,
         headers: {
             "Content-Type": "application/json"

@@ -24,8 +24,8 @@ const useCategory = () => {
     }
   }
 
-  const handleUpdateCategory = async (index) => {
-    const category = categories[index];
+  const handleUpdateCategory = async (id) => {
+    const category = categories[categories.findIndex(({ id }) => id === id)];
     try {
       let response = await UpdateCategory(category);
       if (!response.ok) {
@@ -38,12 +38,12 @@ const useCategory = () => {
 
   const handleEditCategoryLabel = (id, newName) => {
     setCategories(prevCategories => {
-        return prevCategories.map(cat => {
-            if (cat.id === id) {
-                return { ...cat, name: newName, slug: newName };
-            }
-            return cat;
-        });
+      return prevCategories.map(cat => {
+        if (cat.id === id) {
+          return { ...cat, name: newName, slug: newName };
+        }
+        return cat;
+      });
     });
   }
 

@@ -45,7 +45,7 @@ export const DeleteCategory = async (categoryId) => {
 };
 
 export const UpdateCategory = async (category) => {
-    return await FetchWithAuth(`${backendUrl}/categories`, {
+    return await FetchWithAuth(`${backendUrl}/categories/${category.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

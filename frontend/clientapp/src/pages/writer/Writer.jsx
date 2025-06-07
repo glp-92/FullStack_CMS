@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { SavePost } from '../../util/requests/Posts';
+import { getPost, SavePost } from '../../util/requests/Posts';
 import { GetCategories } from "../../util/requests/Categories";
 import { GetThemes } from "../../util/requests/Themes";
 import { ValidateToken } from '../../util/requests/Auth';
@@ -11,8 +11,8 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 const Writer = () => {
   const navigate = useNavigate();
-  const postToEdit = useLocation().state;
 
+  const [postToEdit, setPostToEdit] = useState(useLocation().state)
   const [content, setContent] = useState(postToEdit ? postToEdit.content : '');
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -62,6 +62,10 @@ const Writer = () => {
     /*
       Get categories from backend, if is editing mode, sets category id on combobox
     */
+    const fetchPostData = async () => {
+      const postData = await getPost(postToEdit.slug);
+      setContent(postData.content)
+    }
     const fetchCategories = async () => {
       const response = await GetCategories();
       const fetchedCategories = await response.json();
@@ -95,6 +99,7 @@ const Writer = () => {
         if (fetchedThemes.themes != null) setSelectedThemes([]);
       }
     }
+    fetchPostData();
     fetchCategories();
     fetchThemes();
   }, [])

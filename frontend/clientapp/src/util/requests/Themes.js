@@ -41,7 +41,7 @@ export const DeleteTheme = async (themeId) => {
 };
 
 export const UpdateTheme = async (themeData) => {
-    return await FetchWithAuth(`${backendUrl}/themes`, {
+    return await FetchWithAuth(`${backendUrl}/themes/${themeData.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
