@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# source .env
-# mkdir ./backend/mysql/initdb
+# export ENV_FILE=./.env
 # bash ./backend/mysql/generate_initdb.sh
 
 source ${ENV_FILE}
 
-cat <<EOF > ./backend/mysql/initdb/init.sql
+mkdir -p ./.initdb
+
+cat <<EOF > ./.initdb/init.sql
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED WITH 'caching_sha2_password' BY '${MYSQL_PASSWORD}';
 CREATE USER IF NOT EXISTS '${MYSQL_BLOG_SERVICE_USER}'@'%' IDENTIFIED WITH 'caching_sha2_password' BY '${MYSQL_BLOG_SERVICE_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS ${MYSQL_BLOG_DB_NAME};
