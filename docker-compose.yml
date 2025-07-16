@@ -33,8 +33,6 @@ services:
     read_only: true
     restart: always
     container_name: frontend
-    # ports:
-    #   - "3000:3000"
     user: 1000:1000
     depends_on:
       blog-service:
@@ -53,69 +51,6 @@ services:
           memory: 256M
     networks:
       - private-subnet
-
-  file-service:
-    build: ./backend/filestorage-service/
-    restart: always
-    container_name: file-service
-    # ports:
-    #   - "8000:8000"
-    # user: 1000:1000 # already created non-root user on dockerfile (fastapi)
-    environment:
-      FILE_STORAGE_STATIC_FOLDER: ${FILE_STORAGE_STATIC_FOLDER}
-      FRONTEND_URL: ${FRONTEND_URL}
-    volumes:
-      - ./backend/filestorage-service/images:${FILE_STORAGE_STATIC_FOLDER}
-    depends_on:
-      keycloak:
-        condition: service_healthy
-    security_opt:
-      - no-new-privileges:true
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-    networks:
-      - private-subnet
-
-  blog-service:
-    build: ./backend/blog-service/
-    restart: always
-    container_name: blog-service
-    # ports:
-    #   - "8083:8083"
-    # user: 1000:1000 # already on Dockerfile from Spring DOC
-    environment:
-      MYSQL_HOST: "mysql_svr"
-      MYSQL_BLOG_SERVICE_PASSWORD: ${MYSQL_BLOG_SERVICE_PASSWORD}
-      MYSQL_BLOG_SERVICE_USER: ${MYSQL_BLOG_SERVICE_USER}
-      KEYCLOAK_BLOG_REALM_ID: ${KEYCLOAK_BLOG_REALM_ID}
-      KEYCLOAK_BLOG_CLIENT_ID: ${KEYCLOAK_BLOG_CLIENT_ID}
-      KEYCLOAK_BLOG_CLIENT_SECRET: ${KEYCLOAK_BLOG_CLIENT_SECRET}
-      KEYCLOAK_HOSTNAME: ${KEYCLOAK_HOSTNAME}
-      KEYCLOAK_PORT: ${KEYCLOAK_HTTP_PORT}
-      KEYCLOAK_PROTOCOL: ${KEYCLOAK_PROTOCOL}
-      FRONTEND_URL: ${FRONTEND_URL}
-    depends_on:
-      keycloak:
-        condition: service_healthy
-    security_opt:
-      - no-new-privileges:true
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-    networks:
-      - private-subnet
-      - data-subnet
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
