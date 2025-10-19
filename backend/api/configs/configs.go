@@ -46,10 +46,15 @@ func LoadConfig() (*Config, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = godotenv.Load(filepath.Join(pwd, "../../.env"))
-	if err != nil {
-		log.Fatalf("Error loading .env file: %s.", err)
+	envPath := filepath.Join(pwd, "../../.env")
+	if _, err := os.Stat(envPath); err == nil {
+		if err := godotenv.Load(envPath); err != nil {
+			log.Printf("Warning: error loading .env file: %v", err)
+		}
+	} else {
+		log.Println("No .env file found, relying on environment variables.")
 	}
+
 	cfg := &Config{
 		DB: MySQLConfig{
 			Username: os.Getenv("MYSQL_BLOG_SERVICE_USER"),
