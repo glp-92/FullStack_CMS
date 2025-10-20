@@ -5,13 +5,13 @@
 
 source ${ENV_FILE}
 
-mkdir -p ./.initdb
+mkdir -p ./backend/mysql/.initdb
 
-cat <<EOF > ./.initdb/init.sql
+cat <<EOF > ./backend/mysql/.initdb/init.sql
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED WITH 'caching_sha2_password' BY '${MYSQL_PASSWORD}';
 CREATE USER IF NOT EXISTS '${MYSQL_BLOG_SERVICE_USER}'@'%' IDENTIFIED WITH 'caching_sha2_password' BY '${MYSQL_BLOG_SERVICE_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS ${MYSQL_BLOG_DB_NAME};
-GRANT ALL PRIVILEGES ON blog_service.* TO '${MYSQL_BLOG_SERVICE_USER}'@'%';
+GRANT ALL PRIVILEGES ON ${MYSQL_BLOG_DB_NAME}.* TO '${MYSQL_BLOG_SERVICE_USER}'@'%';
 USE ${MYSQL_BLOG_DB_NAME};
 CREATE TABLE users (
     id CHAR(36) NOT NULL PRIMARY KEY,
