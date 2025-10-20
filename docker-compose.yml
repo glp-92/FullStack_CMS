@@ -30,10 +30,8 @@ services:
 
   frontend:
     build: ./frontend/clientapp/
-    read_only: true
     restart: always
     container_name: frontend
-    user: 1000:1000
     ports:
     - "3000:3000"
     # depends_on:
