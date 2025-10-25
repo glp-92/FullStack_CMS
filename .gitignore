@@ -9,3 +9,4 @@ nginx.crt
 nginx.key
 go.sum
 blog.db
+secrets/

@@ -1,5 +1,4 @@
 services:
-
   # nginx:
   #   image: nginx:1.27.1-alpine
   #   restart: always
@@ -33,7 +32,7 @@ services:
     restart: always
     container_name: frontend
     ports:
-    - "3000:3000"
+      - "3000:3000"
     # depends_on:
     #   blog-service:
     #     condition: service_started
@@ -44,21 +43,21 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 256M
     networks:
       - private-subnet
 
   backend:
     build: ./backend/api/
-    read_only: true 
+    read_only: true
     restart: always
     container_name: backend
     ports:
-    - "${API_PORT}:${API_PORT}"
+      - "${API_PORT}:${API_PORT}"
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -101,10 +100,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 2048M
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 1024M
     networks:
       - data-subnet
