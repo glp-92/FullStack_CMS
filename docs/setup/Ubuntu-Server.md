@@ -76,6 +76,7 @@ findtime = 600
 6. UFW firewall. Default installed on `Ubuntu Server`. Abstraction of `iptables`
 ```bash
 sudo ufw status # see installed
+sudo ufw disable # disable first so rules can maintain session
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow xxx/tcp # ssh defined port

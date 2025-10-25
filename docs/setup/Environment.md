@@ -27,27 +27,16 @@ If `.env` file is placed on same directory as `docker-compose.yml`, variables de
 
 An example of `.env` file. `FRONTEND_URL` will change for development and production
 ```
-KEYCLOAK_DATABASE=keycloak
-KEYCLOAK_MYSQL_USER=keycloak_usr 
-KEYCLOAK_MYSQL_PASSWORD=keycloak_pwd
-KEYCLOAK_ADMIN=admin
-KEYCLOAK_ADMIN_PASSWORD=admin
-KEYCLOAK_HOSTNAME=keycloak
-KEYCLOAK_PROTOCOL=http # if ssl with certs between blog-service and keycloak, change this value to https
-KEYCLOAK_PORT=8080
-
-KEYCLOAK_BLOG_REALM_ID=blog
-KEYCLOAK_BLOG_CLIENT_ID=blog-client
-KEYCLOAK_BLOG_CLIENT_SECRET=t9dhHm7hSBB1cRt1UbxgZ3dnYyJUI6L7 # secret of keycloak client, same value as in ./backend/auth-service/realm-data/...json to generate app data on keycloak
-
 MYSQL_USER=mysqlusr
 MYSQL_PASSWORD=mysqlpwd
 MYSQL_ROOT_PASSWORD=rootpwd
-
-MYSQL_BLOG_SERVICE_PASSWORD=blogservice_pwd
+MYSQL_BLOG_DB_NAME=test
 MYSQL_BLOG_SERVICE_USER=blog
-MYSQL_BLOG_DB_NAME=blog_service
-
-FILE_STORAGE_STATIC_FOLDER=/images 
+MYSQL_BLOG_SERVICE_PASSWORD=blogservice_pwd
+MYSQL_BLOG_ADDR=mysql_svr:3306
+API_PORT=8080
+JWT_ACCESS_TOKEN_EXPIRATION=5
+JWT_REFRESH_TOKEN_EXPIRATION=30
+JWT_SIGN_KEY=d81eb484539dd98786f923a8525808db43f821c70c6d52db8051ec70af9e42cc
 FRONTEND_URL=https://ipServer # this is for production, for local development value will be http://localhost:3000 because frontend port is exposed to host
 ```
