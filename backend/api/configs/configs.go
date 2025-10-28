@@ -10,12 +10,12 @@ import (
 )
 
 type Config struct {
-	DB   MySQLConfig
+	DB   DBConfig
 	Auth AuthConfig
 	API  APIConfig
 }
 
-type MySQLConfig struct {
+type DBConfig struct {
 	Username string
 	Password string
 	Address  string
@@ -56,11 +56,11 @@ func LoadConfig() (*Config, error) {
 	}
 
 	cfg := &Config{
-		DB: MySQLConfig{
-			Username: os.Getenv("MYSQL_BLOG_SERVICE_USER"),
-			Password: os.Getenv("MYSQL_BLOG_SERVICE_PASSWORD"),
-			Address:  os.Getenv("MYSQL_BLOG_ADDR"),
-			DBName:   os.Getenv("MYSQL_BLOG_DB_NAME"),
+		DB: DBConfig{
+			Username: os.Getenv("DB_BLOG_SERVICE_USER"),
+			Password: os.Getenv("DB_BLOG_SERVICE_PASSWORD"),
+			Address:  os.Getenv("DB_BLOG_ADDR"),
+			DBName:   os.Getenv("DB_BLOG_DB_NAME"),
 		},
 		Auth: AuthConfig{
 			JWTSignKey:                []byte(os.Getenv("JWT_SIGN_KEY")),

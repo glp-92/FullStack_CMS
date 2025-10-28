@@ -27,13 +27,13 @@ If `.env` file is placed on same directory as `docker-compose.yml`, variables de
 
 An example of `.env` file. `FRONTEND_URL` will change for development and production
 ```
-MYSQL_USER=mysqlusr
-MYSQL_PASSWORD=mysqlpwd
-MYSQL_ROOT_PASSWORD=rootpwd
-MYSQL_BLOG_DB_NAME=test
-MYSQL_BLOG_SERVICE_USER=blog
-MYSQL_BLOG_SERVICE_PASSWORD=blogservice_pwd
-MYSQL_BLOG_ADDR=mysql_svr:3306
+DB_USER=mysqlusr
+DB_PASSWORD=mysqlpwd
+DB_ROOT_PASSWORD=rootpwd
+DB_BLOG_DB_NAME=test
+DB_BLOG_SERVICE_USER=blog
+DB_BLOG_SERVICE_PASSWORD=blogservice_pwd
+DB_BLOG_ADDR=mysql_svr:3306
 API_PORT=8080
 JWT_ACCESS_TOKEN_EXPIRATION=5
 JWT_REFRESH_TOKEN_EXPIRATION=30

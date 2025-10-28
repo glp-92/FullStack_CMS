@@ -41,12 +41,12 @@ mysql_svr:
     #ports:
         #- "3306:3306"
     environment:
-        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
         - ./backend/mysql/db:/var/lib/mysql # Persistent data
         - ./backend/mysql/initdb:/docker-entrypoint-initdb.d # Entrypoint to dbinit
     healthcheck:
-        test: mysqladmin ping -h 127.0.0.1 -u ${MYSQL_BLOG_DB_NAME} --password=${MYSQL_PASSWORD}
+        test: mysqladmin ping -h 127.0.0.1 -u ${DB_BLOG_DB_NAME} --password=${DB_PASSWORD}
         start_period: 5s
         interval: 5s
         timeout: 5s
