@@ -79,9 +79,9 @@ services:
     image: mariadb:12.0.2
     restart: always
     ports:
-      - "4306:3306"
+      - "5306:3306"
     environment:
-      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - ./backend/mariadb/db:/var/lib/mysql
       - ./backend/mariadb/.initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
