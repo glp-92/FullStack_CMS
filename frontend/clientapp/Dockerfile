@@ -1,10 +1,12 @@
 # # Multi Stage
 # ---- Build Stage ----
 FROM node:22-alpine AS build
+ARG VITE_BACKEND_URL
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 RUN npm run build
 # ---- Production Stage ----
 FROM nginx:1.27-alpine AS production

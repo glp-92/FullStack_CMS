@@ -27,7 +27,10 @@ services:
       - private-subnet
 
   frontend:
-    build: ./frontend/clientapp/
+    build:
+      context: ./frontend/clientapp/
+      args:
+        VITE_BACKEND_URL: https://localhost:443/blog
     restart: always
     ports:
       - "3000:3000"
