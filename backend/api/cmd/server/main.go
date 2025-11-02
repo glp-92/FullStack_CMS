@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -40,13 +39,13 @@ func main() {
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
-	fmt.Println("DB Connected!")
+	log.Println("DB Connected!")
 	authRepo := auth.NewMySQLAuthRepository(db)
 	authService := auth.NewAuthService(authRepo, cfg.Auth)
 	existingUser, err := authRepo.GetUserDetails(cfg.Blog.Username)
 	_ = existingUser
-	if errors.Is(err, sql.ErrNoRows) {
-		fmt.Println("Blog user does not exist, creating...")
+	if err != nil {
+		log.Printf("Blog user does not exist, creating...")
 		err = authService.CreateUser(dto.RegisterRequest{
 			Username: cfg.Blog.Username,
 			Password: cfg.Blog.Password,
@@ -54,9 +53,9 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error creating user: %v", err)
 		}
-		fmt.Printf("User '%s' creation success.\n", cfg.Blog.Username)
+		log.Printf("User '%s' creation success.\n", cfg.Blog.Username)
 	} else {
-		fmt.Printf("Blog user exists, proceed to launch")
+		log.Printf("Blog user exists, proceed to launch")
 	}
 	router.SetupRouter(db, authService)
 	log.Printf("Server listening port :%s", cfg.API.APIPort)

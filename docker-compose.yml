@@ -11,7 +11,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    # user: 1000:1000
     volumes:
       - ./frontend/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/reverse-proxy/certs:/etc/nginx/certs # self signed certs
@@ -43,8 +42,6 @@ services:
     depends_on:
       backend:
         condition: service_started
-    #   file-service:
-    #     condition: service_started
     security_opt:
       - no-new-privileges:true
     deploy:
@@ -77,6 +74,8 @@ services:
       JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
       JWT_SIGN_KEY: ${JWT_SIGN_KEY}
       FRONTEND_URL: ${FRONTEND_URL}
+      BLOG_USERNAME: ${BLOG_USERNAME}
+      BLOG_PASSWORD: ${BLOG_PASSWORD}
     user: 1000:1000
     security_opt:
       - no-new-privileges:true
