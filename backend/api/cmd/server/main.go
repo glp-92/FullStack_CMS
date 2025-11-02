@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"fullstackcms/backend/configs"
 	"fullstackcms/backend/internal/router"
 	"fullstackcms/backend/pkg/auth"
+	"fullstackcms/backend/pkg/auth/dto"
 	"fullstackcms/backend/pkg/middlewares"
 
 	"github.com/go-sql-driver/mysql"
@@ -34,15 +36,28 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	pingErr := db.Ping()
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
-	fmt.Println("Connected!")
-
+	fmt.Println("DB Connected!")
 	authRepo := auth.NewMySQLAuthRepository(db)
 	authService := auth.NewAuthService(authRepo, cfg.Auth)
+	existingUser, err := authRepo.GetUserDetails(cfg.Blog.Username)
+	_ = existingUser
+	if errors.Is(err, sql.ErrNoRows) {
+		fmt.Println("Blog user does not exist, creating...")
+		err = authService.CreateUser(dto.RegisterRequest{
+			Username: cfg.Blog.Username,
+			Password: cfg.Blog.Password,
+		})
+		if err != nil {
+			log.Fatalf("Error creating user: %v", err)
+		}
+		fmt.Printf("User '%s' creation success.\n", cfg.Blog.Username)
+	} else {
+		fmt.Printf("Blog user exists, proceed to launch")
+	}
 	router.SetupRouter(db, authService)
 	log.Printf("Server listening port :%s", cfg.API.APIPort)
 	middleware_handler := middlewares.Log(middlewares.CORS(http.DefaultServeMux, cfg.API.FrontendUrl))

@@ -1,6 +1,12 @@
+# utilities:
+# docker stop $(docker ps -a -q)
+# docker rm $(docker ps -a -q)
+# debug: docker compose run --entrypoint /bin/bash service-name
+# docker run -it --entrypoint /bin/bash -v /home/user/test:/test imagename
+
 services:
   nginx:
-    image: nginx:1.27.1-alpine
+    image: nginx:1.29.3-alpine
     restart: always
     ports:
       - "80:80"

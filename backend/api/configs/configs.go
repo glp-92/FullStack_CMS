@@ -13,6 +13,7 @@ type Config struct {
 	DB   DBConfig
 	Auth AuthConfig
 	API  APIConfig
+	Blog BlogConfig
 }
 
 type DBConfig struct {
@@ -20,6 +21,11 @@ type DBConfig struct {
 	Password string
 	Address  string
 	DBName   string
+}
+
+type BlogConfig struct {
+	Username string
+	Password string
 }
 
 type AuthConfig struct {
@@ -70,6 +76,10 @@ func LoadConfig() (*Config, error) {
 		API: APIConfig{
 			APIPort:     os.Getenv("API_PORT"),
 			FrontendUrl: os.Getenv("FRONTEND_URL"),
+		},
+		Blog: BlogConfig{
+			Username: os.Getenv("BLOG_USERNAME"),
+			Password: os.Getenv("BLOG_PASSWORD"),
 		},
 	}
 	return cfg, nil

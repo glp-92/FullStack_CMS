@@ -9,7 +9,7 @@ COPY . .
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 RUN npm run build
 # ---- Production Stage ----
-FROM nginx:1.27-alpine AS production
+FROM nginx:1.29-3-alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3000
