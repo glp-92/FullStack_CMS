@@ -17,6 +17,11 @@ import (
 
 var db *sql.DB
 
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "OK")
+}
+
 func main() {
 	cfg, err := configs.LoadConfig()
 	if err != nil {
@@ -60,5 +65,6 @@ func main() {
 	router.SetupRouter(db, authService)
 	log.Printf("Server listening port :%s", cfg.API.APIPort)
 	middleware_handler := middlewares.Log(middlewares.CORS(http.DefaultServeMux, cfg.API.FrontendUrl))
+	http.HandleFunc("/health", healthCheckHandler)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", cfg.API.APIPort), middleware_handler))
 }
