@@ -5,6 +5,9 @@ import DrawerList from './DrawerList';
 import { AppBar, Toolbar, Container, Button, Box, Typography } from '@mui/material';
 
 // import HomeIcon from '@mui/icons-material/Home';
+const blogName = import.meta.env.VITE_BLOG_NAME;
+const blogfirstChar = blogName.charAt(0).toUpperCase();
+const blogrestChars = blogName.slice(1).toUpperCase();
 
 const NavBar = () => {
 
@@ -19,7 +22,7 @@ const NavBar = () => {
               to="/"
               sx={{ padding: 1, margin: 0, borderRadius: 2 }}
             >
-              <Typography variant='logocolor'>G</Typography><Typography variant='logogray'>CODE</Typography>
+              <Typography variant='logocolor'>{blogfirstChar}</Typography><Typography variant='logogray'>{blogrestChars}</Typography>
               {/*<HomeIcon sx={{fontSize:'2rem'}} />*/}
             </Button>
           </Box>

@@ -36,6 +36,8 @@ services:
       context: ./frontend/clientapp/
       args:
         VITE_BACKEND_URL: ${BACKEND_URL}
+        VITE_BLOG_NAME: ${BLOG_NAME}
+        VITE_GITHUB_LINK: ${GITHUB_LINK}
     restart: always
     depends_on:
       backend:

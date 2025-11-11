@@ -2,11 +2,15 @@
 # ---- Build Stage ----
 FROM node:22-alpine AS build
 ARG VITE_BACKEND_URL
+ARG VITE_BLOG_NAME
+ARG VITE_GITHUB_LINK
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV VITE_BLOG_NAME=$VITE_BLOG_NAME
+ENV VITE_GITHUB_LINK=$VITE_GITHUB_LINK
 RUN npm run build
 # ---- Production Stage ----
 FROM nginx:1.29.3-alpine AS production

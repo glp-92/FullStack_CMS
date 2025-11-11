@@ -6,7 +6,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
+
+const githubLink = import.meta.env.VITE_GITHUB_LINK;
 
 const Footer = () => {
 
@@ -20,7 +21,7 @@ const Footer = () => {
         <IconButton
           component="a"
           size="large"
-          href="https://github.com/glp-92"
+          href={githubLink}
           target="_blank"
           rel="noopener noreferrer"
           edge="start"
