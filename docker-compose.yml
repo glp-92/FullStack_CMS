@@ -13,7 +13,7 @@ services:
       - "443:443"
     volumes:
       - ./frontend/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
-      - ./frontend/reverse-proxy/certs:/etc/nginx/certs # self signed certs
+      - ./frontend/reverse-proxy/certs:/etc/nginx/certs
     depends_on:
       frontend:
         condition: service_started
@@ -82,7 +82,7 @@ services:
       API_PORT: ${API_PORT}
       JWT_ACCESS_TOKEN_EXPIRATION: ${JWT_ACCESS_TOKEN_EXPIRATION}
       JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
-      JWT_SIGN_KEY: ${JWT_SIGN_KEY}
+      JWT_SIGN_KEY: ${JWT_SIGN_KEY} # openssl rand -hex 32
       FRONTEND_URL: ${FRONTEND_URL}
       BLOG_USERNAME: ${BLOG_USERNAME}
       BLOG_PASSWORD: ${BLOG_PASSWORD}
@@ -132,9 +132,9 @@ services:
       MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
       MINIO_KMS_AUTO_ENCRYPTION: on
-      MINIO_KMS_SECRET_KEY: key:${STORAGE_ENCRYPT_KEY}
+      MINIO_KMS_SECRET_KEY: key:${STORAGE_ENCRYPT_KEY} # openssl rand -base64 32
     volumes:
-      - './minio_data:/data'
+      - "./minio_data:/data"
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
