@@ -10,4 +10,4 @@ nginx.key
 go.sum
 blog.db
 secrets/
-minio_data
+seaweed_data

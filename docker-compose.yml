@@ -7,9 +7,9 @@
 services:
   nginx:
     image: nginx:1.29.3-alpine
-    restart: always
+    restart: unless-stopped
     ports:
-      - "80:80"
+      - "192.168.1.253:90:80"
       - "443:443"
     volumes:
       - ./frontend/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
@@ -25,8 +25,8 @@ services:
           cpus: "0.5"
           memory: 256M
         reservations:
-          cpus: "0.25"
-          memory: 128M
+          cpus: "0.5"
+          memory: 256M
     networks:
       - public-subnet
       - private-subnet
@@ -38,7 +38,7 @@ services:
         VITE_BACKEND_URL: ${BACKEND_URL}
         VITE_BLOG_NAME: ${BLOG_NAME}
         VITE_GITHUB_LINK: ${GITHUB_LINK}
-    restart: always
+    restart: unless-stopped
     depends_on:
       backend:
         condition: service_started
@@ -58,7 +58,7 @@ services:
   backend:
     build: ./backend/api/
     read_only: true
-    restart: always
+    restart: unless-stopped
     depends_on:
       database:
         condition: service_healthy
@@ -80,7 +80,7 @@ services:
       API_PORT: ${API_PORT}
       JWT_ACCESS_TOKEN_EXPIRATION: ${JWT_ACCESS_TOKEN_EXPIRATION}
       JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
-      JWT_SIGN_KEY: ${JWT_SIGN_KEY} # openssl rand -hex 32
+      JWT_SIGN_KEY: ${JWT_SIGN_KEY}
       FRONTEND_URL: ${FRONTEND_URL}
       BLOG_USERNAME: ${BLOG_USERNAME}
       BLOG_PASSWORD: ${BLOG_PASSWORD}
@@ -93,9 +93,9 @@ services:
 
   database:
     image: mariadb:12.0.2
-    restart: always
+    restart: unless-stopped
     ports:
-      - "5306:3306"
+      - "127.0.0.1:5306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
@@ -121,40 +121,19 @@ services:
       - data-subnet
 
   storage:
-    image: quay.io/minio/minio:latest
-    command: server /data --console-address ":9001"
+    image: chrislusf/seaweedfs:4.07
+    command: "server -dir=/data -filer -filer.disableDirListing"
+    restart: unless-stopped
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
-      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
-      MINIO_KMS_AUTO_ENCRYPTION: on
-      MINIO_KMS_SECRET_KEY: key:${STORAGE_ENCRYPT_KEY} # openssl rand -base64 32
+      - "127.0.0.1:8888:8888" # Filer
     volumes:
-      - "./minio_data:/data"
+      - ./seaweed_data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 5s
+      test: ["CMD", "curl", "-f", "http://localhost:8888/healthz"]
+      interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - private-subnet
-
-  storage-setup:
-    image: minio/mc
-    depends_on:
-      storage:
-        condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set myminio http://storage:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD;
-      /usr/bin/mc mb myminio/static --ignore-existing;
-      /usr/bin/mc anonymous set download myminio/static;
-      "
-    environment:
-      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
-      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
+      start_period: 10s
     networks:
       - private-subnet
 
