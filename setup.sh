@@ -11,3 +11,7 @@ export export ENV_FILE=$ENV_FILE
 echo "🚀 Generating initdb config"
 bash ./backend/mariadb/generate_initdb.sh
 bash ./frontend/reverse-proxy/generate_certs.sh
+
+mkdir -p rustfs_data
+sudo chown -R 10001:10001 rustfs_data
+echo "✅ Setup complete! You can now run 'docker compose up' to start the application."
