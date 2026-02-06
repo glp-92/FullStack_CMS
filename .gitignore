@@ -11,3 +11,5 @@ go.sum
 blog.db
 secrets/
 seaweed_data
+minio_data
+rustfs_data
